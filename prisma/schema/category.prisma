@@ -1,0 +1,9 @@
+model Category {
+    id            String     @id @default(uuid())
+    category_name String     @unique @db.VarChar(255)
+    properties    Property[]
+    created_at    DateTime   @default(now())
+    updated_at    DateTime   @updatedAt
+
+    @@map("categories")
+}
