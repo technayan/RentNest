@@ -6,5 +6,6 @@ import { propertyController } from "./property.controller";
 const router = Router();
 
 router.post("/create", auth(Role.LANDLORD), propertyController.createProperty);
+router.get("/", propertyController.getAllProperties);
 
 export const propertyRouter = router;

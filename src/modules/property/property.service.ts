@@ -54,6 +54,16 @@ const createPropertyIntoDB = async (
   return transactionResult;
 };
 
+const getPropertiesFromDB = async () => {
+  const properties = await prisma.property.findMany({
+    where: { isDeleted: false },
+    omit: { isDeleted: true },
+  });
+
+  return properties;
+};
+
 export const propertyService = {
   createPropertyIntoDB,
+  getPropertiesFromDB,
 };

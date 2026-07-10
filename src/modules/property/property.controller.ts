@@ -23,6 +23,20 @@ const createProperty = catchAsync(
   },
 );
 
+const getAllProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await propertyService.getPropertiesFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All properties retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const propertyController = {
   createProperty,
+  getAllProperties,
 };
