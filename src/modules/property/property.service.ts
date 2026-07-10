@@ -57,13 +57,21 @@ const createPropertyIntoDB = async (
 const getPropertiesFromDB = async () => {
   const properties = await prisma.property.findMany({
     where: { isDeleted: false },
-    omit: { isDeleted: true },
   });
 
   return properties;
 };
 
+const getPropertyByIdfromDB = async (propertyId: string) => {
+  const property = await prisma.property.findUniqueOrThrow({
+    where: { id: propertyId },
+  });
+
+  return property;
+};
+
 export const propertyService = {
   createPropertyIntoDB,
   getPropertiesFromDB,
+  getPropertyByIdfromDB,
 };
