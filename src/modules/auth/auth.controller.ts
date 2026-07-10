@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 import { authService } from "./auth.service";
 
 const registerUser = catchAsync(
@@ -9,7 +10,7 @@ const registerUser = catchAsync(
 
     const result = await authService.registerUserIntoDB(payload);
 
-    res.status(httpStatus.CREATED).json({
+    sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "User created successfully.",
@@ -39,7 +40,7 @@ const loginUser = catchAsync(
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
-    res.status(httpStatus.OK).json({
+    sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "User logged in successfully",
@@ -54,7 +55,7 @@ const getMyProfile = catchAsync(
 
     const result = await authService.getMyProfileFromDB(userId as string);
 
-    res.status(httpStatus.OK).json({
+    sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: "User retrived successfully.",
