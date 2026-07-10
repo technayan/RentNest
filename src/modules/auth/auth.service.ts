@@ -5,7 +5,13 @@ import { jwtUtils } from "../../utils/jwtUtils";
 import { ILoginPayload, IRegisterPayload } from "./auth.interface";
 
 const registerUserIntoDB = async (payload: IRegisterPayload) => {
-  const { name, email, phone, password, profile_photo } = payload;
+  const { name, email, phone, password, role, profile_photo } = payload;
+
+  if (role === "ADMIN") {
+    throw new Error(
+      "You can not open an admin account without another admin's permission.",
+    );
+  }
 
   const isUserExist = await prisma.user.findUnique({
     where: { email },
@@ -26,6 +32,7 @@ const registerUserIntoDB = async (payload: IRegisterPayload) => {
       email,
       phone,
       password: hashedPassword,
+      role,
       profile_photo,
     },
     omit: {
