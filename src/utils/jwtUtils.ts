@@ -12,6 +12,23 @@ const signToken = (
   return token;
 };
 
+const verifyToken = (token: string, secret: string) => {
+  try {
+    const verifiedToken = jwt.verify(token, secret);
+
+    return {
+      success: true,
+      data: verifiedToken,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      error: err.message,
+    };
+  }
+};
+
 export const jwtUtils = {
   signToken,
+  verifyToken,
 };

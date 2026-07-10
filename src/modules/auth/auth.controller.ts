@@ -48,7 +48,23 @@ const loginUser = catchAsync(
   },
 );
 
+const getMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    const result = await authService.getMyProfileFromDB(userId as string);
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const authController = {
   registerUser,
   loginUser,
+  getMyProfile,
 };
