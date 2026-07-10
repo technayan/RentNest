@@ -5,3 +5,8 @@ export interface IRegisterPayload {
   password: string;
   profile_photo?: string;
 }
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
+}

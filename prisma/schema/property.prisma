@@ -10,6 +10,7 @@ model Property {
     price               Decimal         @db.Decimal(10, 2)
     location            String          @db.VarChar(255)
     availability_status PropertyStatus  @default(AVAILABLE)
+    isDeleted           Boolean         @default(false)
     rental_requests     RentalRequest[]
     reviews             Review[]
     created_at          DateTime        @default(now())
