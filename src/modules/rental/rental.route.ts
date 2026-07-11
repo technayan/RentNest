@@ -12,5 +12,10 @@ router.post(
 );
 router.get("/me", auth(Role.TENANT), rentalController.getMyRequests);
 router.get("/:requestId", rentalController.getRequestById);
+router.patch(
+  "/:requestId",
+  auth(Role.LANDLORD),
+  rentalController.changeRequestStatus,
+);
 
 export const rentalRouter = router;

@@ -62,8 +62,31 @@ const getRequestById = catchAsync(
   },
 );
 
+// Update Request
+const changeRequestStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const requestId = req.params.requestId;
+    const landLordId = req.user?.id;
+    const { status } = req.body;
+
+    const result = await rentalService.changeRequestStatusIntoDB(
+      requestId as string,
+      landLordId as string,
+      status,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental Requests updated successfully.",
+      data: result,
+    });
+  },
+);
+
 export const rentalController = {
   createRentalRequest,
   getMyRequests,
   getRequestById,
+  changeRequestStatus,
 };
