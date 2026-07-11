@@ -40,7 +40,17 @@ const getMyRentalRequestsFromDB = async (tenantId: string) => {
   return requests;
 };
 
+// Get Request By ID
+const getRequestByIDFromDB = async (requestId: string) => {
+  const request = await prisma.rentalRequest.findUniqueOrThrow({
+    where: { id: requestId },
+  });
+
+  return request;
+};
+
 export const rentalService = {
   createRentalRequestIntoDB,
   getMyRentalRequestsFromDB,
+  getRequestByIDFromDB,
 };
