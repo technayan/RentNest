@@ -1,57 +1,36 @@
 import { prisma } from "../../lib/prisma";
-import { ICreatePropertyPayload } from "./property.interface";
+import { isCategoryExist } from "../../utils/isCategoryExist";
+import {
+  ICreatePropertyPayload,
+  IUpdatePropertyPayload,
+} from "./property.interface";
 
 const createPropertyIntoDB = async (
   payload: ICreatePropertyPayload,
   userId: string,
 ) => {
-  const transactionResult = await prisma.$transaction(async (tx) => {
-    const { title, category, property_image, description, price, location } =
-      payload;
+  const { title, category, property_image, description, price, location } =
+    payload;
 
-    let lowerCasedCategory = null;
-    let existCategory = null;
-    let categoryId = null;
+  let category_id;
 
-    if (category) {
-      lowerCasedCategory = category.toLowerCase();
+  if (category) {
+    category_id = await isCategoryExist(category);
+  }
 
-      existCategory = await tx.category.findUnique({
-        where: {
-          category_name: lowerCasedCategory,
-        },
-      });
-
-      if (existCategory) {
-        categoryId = existCategory.id;
-      }
-    }
-
-    if (lowerCasedCategory && !existCategory) {
-      const newCategory = await tx.category.create({
-        data: {
-          category_name: lowerCasedCategory,
-        },
-      });
-
-      categoryId = newCategory.id;
-    }
-
-    const newProperty = await tx.property.create({
-      data: {
-        title,
-        landlord_id: userId,
-        category_id: categoryId,
-        property_image,
-        description,
-        price,
-        location,
-      },
-    });
-
-    return newProperty;
+  const newProperty = await prisma.property.create({
+    data: {
+      title,
+      landlord_id: userId,
+      category_id,
+      property_image,
+      description,
+      price,
+      location,
+    },
   });
-  return transactionResult;
+
+  return newProperty;
 };
 
 const getPropertiesFromDB = async () => {
@@ -70,8 +49,39 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
   return property;
 };
 
+const updatePropertyIntoDB = async (
+  payload: IUpdatePropertyPayload,
+  propertyId: string,
+  userId: string,
+) => {
+  const property = await prisma.property.findUniqueOrThrow({
+    where: { id: propertyId },
+  });
+
+  if (property.landlord_id !== userId) {
+    throw new Error("You don't have permission to edit this property!");
+  }
+
+  const { title, category, property_image, description, price, location } =
+    payload;
+
+  let category_id;
+
+  if (category) {
+    category_id = await isCategoryExist(category);
+  }
+
+  const updatedProperty = await prisma.property.update({
+    where: { id: propertyId },
+    data: { title, category_id, property_image, description, price, location },
+  });
+
+  return updatedProperty;
+};
+
 export const propertyService = {
   createPropertyIntoDB,
   getPropertiesFromDB,
   getPropertyByIdfromDB,
+  updatePropertyIntoDB,
 };

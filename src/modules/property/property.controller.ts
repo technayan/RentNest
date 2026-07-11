@@ -53,8 +53,30 @@ const getPropertyById = catchAsync(
   },
 );
 
+const updateProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
+    const propertyId = req.params.propertyId;
+    const userId = req.user?.id;
+
+    const result = await propertyService.updatePropertyIntoDB(
+      payload,
+      propertyId as string,
+      userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Property updated successfully.",
+      data: result,
+    });
+  },
+);
+
 export const propertyController = {
   createProperty,
   getAllProperties,
   getPropertyById,
+  updateProperty,
 };
