@@ -17,6 +17,27 @@ const createCategoryIntoDB = async (categoryName: string) => {
   return category;
 };
 
+// Get All Categories
+const getAllCategoriesFromDB = async () => {
+  const categories = await prisma.category.findMany();
+  return categories;
+};
+
+// Update Category
+const updateCategoryIntoDB = async (
+  categoryName: string,
+  categoryId: string,
+) => {
+  const category = await prisma.category.update({
+    where: { id: categoryId },
+    data: { category_name: categoryName.toLowerCase() },
+  });
+
+  return category;
+};
+
 export const categoryService = {
   createCategoryIntoDB,
+  getAllCategoriesFromDB,
+  updateCategoryIntoDB,
 };

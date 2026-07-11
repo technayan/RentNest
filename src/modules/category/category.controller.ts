@@ -20,6 +20,42 @@ const createCategory = catchAsync(
   },
 );
 
+// Get All Categories
+const getAllCategories = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await categoryService.getAllCategoriesFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All categories retrived successfully.",
+      data: result,
+    });
+  },
+);
+
+// Update Category
+const updateCategory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const categoryName = req.body.category_name;
+    const categoryId = req.params.categoryId;
+
+    const result = await categoryService.updateCategoryIntoDB(
+      categoryName,
+      categoryId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category updated successfully.",
+      data: result,
+    });
+  },
+);
+
 export const categoryController = {
   createCategory,
+  getAllCategories,
+  updateCategory,
 };
