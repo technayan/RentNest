@@ -62,8 +62,15 @@ const updatePropertyIntoDB = async (
     throw new Error("You don't have permission to edit this property!");
   }
 
-  const { title, category, property_image, description, price, location } =
-    payload;
+  const {
+    title,
+    category,
+    property_image,
+    description,
+    price,
+    location,
+    availability_status,
+  } = payload;
 
   let category_id;
 
@@ -73,7 +80,15 @@ const updatePropertyIntoDB = async (
 
   const updatedProperty = await prisma.property.update({
     where: { id: propertyId },
-    data: { title, category_id, property_image, description, price, location },
+    data: {
+      title,
+      category_id,
+      property_image,
+      description,
+      price,
+      location,
+      availability_status,
+    },
   });
 
   return updatedProperty;

@@ -1,3 +1,5 @@
+import { PropertyStatus } from "../../../generated/prisma/enums";
+
 export interface ICreatePropertyPayload {
   title: string;
   category?: string;
@@ -14,4 +16,5 @@ export interface IUpdatePropertyPayload {
   description?: string;
   price?: number;
   location?: string;
+  availability_status?: PropertyStatus;
 }
