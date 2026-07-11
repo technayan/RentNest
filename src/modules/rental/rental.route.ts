@@ -10,5 +10,6 @@ router.post(
   auth(Role.TENANT),
   rentalController.createRentalRequest,
 );
+router.get("/me", auth(Role.TENANT), rentalController.getMyRequests);
 
 export const rentalRouter = router;
