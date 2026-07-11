@@ -4,6 +4,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { authService } from "./auth.service";
 
+// Register User
 const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -19,6 +20,7 @@ const registerUser = catchAsync(
   },
 );
 
+// Login User
 const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -49,6 +51,7 @@ const loginUser = catchAsync(
   },
 );
 
+// Get My Profile
 const getMyProfile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id;

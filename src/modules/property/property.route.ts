@@ -13,5 +13,10 @@ router.put(
   auth(Role.LANDLORD),
   propertyController.updateProperty,
 );
+router.delete(
+  "/:propertyId",
+  auth(Role.LANDLORD),
+  propertyController.deleteProperty,
+);
 
 export const propertyRouter = router;

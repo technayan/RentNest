@@ -4,6 +4,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { propertyService } from "./property.service";
 
+// Create Property
 const createProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -23,6 +24,7 @@ const createProperty = catchAsync(
   },
 );
 
+// Get All Property
 const getAllProperties = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await propertyService.getPropertiesFromDB();
@@ -36,6 +38,7 @@ const getAllProperties = catchAsync(
   },
 );
 
+// Get Property By ID
 const getPropertyById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const propertyId = req.params.propertyId;
@@ -53,6 +56,7 @@ const getPropertyById = catchAsync(
   },
 );
 
+// Update Property
 const updateProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -74,9 +78,30 @@ const updateProperty = catchAsync(
   },
 );
 
+// Delete Property
+const deleteProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const propertyId = req.params.propertyId;
+    const userId = req.user?.id;
+
+    await propertyService.deletePropertyFromDB(
+      propertyId as string,
+      userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Property deleted successfully.",
+      data: null,
+    });
+  },
+);
+
 export const propertyController = {
   createProperty,
   getAllProperties,
   getPropertyById,
   updateProperty,
+  deleteProperty,
 };

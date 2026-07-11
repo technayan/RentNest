@@ -4,6 +4,7 @@ import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwtUtils";
 import { ILoginPayload, IRegisterPayload } from "./auth.interface";
 
+// Register User
 const registerUserIntoDB = async (payload: IRegisterPayload) => {
   const { name, email, phone, password, role, profile_photo } = payload;
 
@@ -43,6 +44,7 @@ const registerUserIntoDB = async (payload: IRegisterPayload) => {
   return user;
 };
 
+// Login User
 const userLoginIntoDB = async (payload: ILoginPayload) => {
   const { email, password } = payload;
 
@@ -83,6 +85,7 @@ const userLoginIntoDB = async (payload: ILoginPayload) => {
   return { accessToken, refreshToken };
 };
 
+// Get My Profile
 const getMyProfileFromDB = async (userId: string) => {
   const user = await prisma.user.findFirstOrThrow({
     where: { id: userId },
