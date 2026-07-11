@@ -6,8 +6,6 @@ model RentalRequest {
     property    Property            @relation(fields: [property_id], references: [id], onDelete: Restrict)
     message     String
     status      RentalRequestStatus @default(PENDING)
-    start_date  DateTime
-    end_date    DateTime
     created_at  DateTime            @default(now())
     updated_at  DateTime            @updatedAt
     review      Review?

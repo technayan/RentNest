@@ -38,11 +38,6 @@ const createPropertyIntoDB = async (
 
 // Get All Property
 const getPropertiesFromDB = async (query: IPropertyQuery) => {
-  // const properties = await prisma.property.findMany({
-  //   where: { isDeleted: false },
-  // });
-
-  // return properties;
   const limit = query.limit ? Number(query.limit) : 10;
   const page = query.page ? Number(query.page) : 1;
   const skip = (page - 1) * limit;
@@ -50,6 +45,17 @@ const getPropertiesFromDB = async (query: IPropertyQuery) => {
   const sortOrder = query.sortOrder ? query.sortOrder : "desc";
 
   const andConditions: PropertyWhereInput[] = [];
+
+  andConditions.push({
+    AND: [
+      {
+        availability_status: "AVAILABLE",
+      },
+      {
+        isDeleted: false,
+      },
+    ],
+  });
 
   if (query.searchTerm) {
     andConditions.push({
