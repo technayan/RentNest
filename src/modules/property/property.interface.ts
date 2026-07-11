@@ -1,4 +1,5 @@
 import { PropertyStatus } from "../../../generated/prisma/enums";
+import { PropertyWhereInput } from "../../../generated/prisma/models";
 
 export interface ICreatePropertyPayload {
   title: string;
@@ -17,4 +18,12 @@ export interface IUpdatePropertyPayload {
   price?: number;
   location?: string;
   availability_status?: PropertyStatus;
+}
+
+export interface IPropertyQuery extends PropertyWhereInput {
+  searchTerm?: string;
+  page?: string;
+  limit?: string;
+  sortOrder?: string;
+  sortBy?: string;
 }
