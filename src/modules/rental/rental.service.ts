@@ -1,4 +1,3 @@
-import { RentalRequestStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 // Create Request
@@ -50,49 +49,34 @@ const getRequestByIDFromDB = async (requestId: string) => {
     where: { id: requestId },
     include: {
       user: {
-        omit: { password: true },
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          status: true,
+          profile_photo: true,
+        },
       },
-      property: true,
+      property: {
+        include: {
+          landLord: {
+            select: {
+              name: true,
+              email: true,
+              phone: true,
+              profile_photo: true,
+            },
+          },
+        },
+      },
     },
   });
 
   return request;
 };
 
-// Update Request
-const changeRequestStatusIntoDB = async (
-  requestId: string,
-  landLordId: string,
-  status: RentalRequestStatus,
-) => {
-  const request = await prisma.rentalRequest.findUniqueOrThrow({
-    where: { id: requestId },
-    include: {
-      property: {
-        include: {
-          landLord: true,
-        },
-      },
-    },
-  });
-
-  if (request.property.landLord.id != landLordId) {
-    throw new Error("You've no permission to update this request");
-  }
-
-  const updatedRequest = await prisma.rentalRequest.update({
-    where: { id: requestId },
-    data: {
-      status,
-    },
-  });
-
-  return updatedRequest;
-};
-
 export const rentalService = {
   createRentalRequestIntoDB,
   getMyRentalRequestsFromDB,
   getRequestByIDFromDB,
-  changeRequestStatusIntoDB,
 };
