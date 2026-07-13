@@ -48,7 +48,7 @@ const getRequestByIDFromDB = async (requestId: string) => {
   const request = await prisma.rentalRequest.findUniqueOrThrow({
     where: { id: requestId },
     include: {
-      user: {
+      tenant: {
         select: {
           name: true,
           email: true,

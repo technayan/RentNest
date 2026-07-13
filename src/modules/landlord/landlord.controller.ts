@@ -70,7 +70,6 @@ const deleteProperty = catchAsync(
 const getRequestsForLandLord = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const landLordId = req.user?.id;
-    console.log(landLordId);
 
     const result = await landlordService.getRequestsForLandLordFromDB(
       landLordId as string,

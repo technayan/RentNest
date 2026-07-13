@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "payments" ALTER COLUMN "method" DROP NOT NULL,
+ALTER COLUMN "method" DROP DEFAULT,
+ALTER COLUMN "provider" DROP NOT NULL,
+ALTER COLUMN "provider" DROP DEFAULT;

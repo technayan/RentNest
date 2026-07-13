@@ -14,4 +14,6 @@ export default {
   jwt_refresh_token_secret: process.env.JWT_REFRESH_TOKEN_SECRET as string,
   jwt_refresh_token_expires_in: process.env
     .JWT_REFRESH_TOKEN_EXPIRES_IN as SignOptions,
+  stripe_api_secret_key: process.env.STRIPE_API_SECRET_KEY as string,
+  stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET as string,
 };

@@ -108,7 +108,7 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
       },
     },
     include: {
-      user: {
+      tenant: {
         select: {
           name: true,
           email: true,
@@ -124,6 +124,8 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
       },
     },
   });
+
+  console.log(requests);
 
   return requests;
 };
@@ -145,7 +147,7 @@ const changeRequestStatusIntoDB = async (
     },
   });
 
-  if (request.property.landLord.id != landLordId) {
+  if (request.property.landlord_id !== landLordId) {
     throw new Error("You've no permission to update this request");
   }
 
@@ -155,7 +157,7 @@ const changeRequestStatusIntoDB = async (
       status,
     },
     include: {
-      user: {
+      tenant: {
         select: {
           name: true,
           email: true,

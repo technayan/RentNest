@@ -1,15 +1,15 @@
 model RentalRequest {
     id          String              @id @default(uuid())
     tenant_id   String
-    user        User                @relation(fields: [tenant_id], references: [id], onDelete: Restrict)
+    tenant      User                @relation(fields: [tenant_id], references: [id], onDelete: Restrict)
     property_id String
     property    Property            @relation(fields: [property_id], references: [id], onDelete: Restrict)
     message     String
     status      RentalRequestStatus @default(PENDING)
     created_at  DateTime            @default(now())
     updated_at  DateTime            @updatedAt
-    review      Review?
     payment     Payment?
+    review      Review?
 
     @@map("rental_requests")
 }

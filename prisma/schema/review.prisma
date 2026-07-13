@@ -1,7 +1,7 @@
 model Review {
     id                String        @id @default(uuid())
     tenant_id         String
-    user              User          @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+    tenant            User          @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
     property_id       String
     property          Property      @relation(fields: [property_id], references: [id], onDelete: Cascade)
     rental_request_id String        @unique

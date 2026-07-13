@@ -9,6 +9,7 @@ model User {
     profile_photo   String?
     properties      Property[]
     rental_requests RentalRequest[]
+    payments        Payment[]
     reviews         Review[]
     created_at      DateTime        @default(now())
     updated_at      DateTime        @updatedAt
