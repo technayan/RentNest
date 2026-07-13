@@ -4,6 +4,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { paymentService } from "./payment.service";
 
+// Create Payment Session
 const createPaymentSession = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const requestId = req.params.requestId;
@@ -23,6 +24,7 @@ const createPaymentSession = catchAsync(
   },
 );
 
+// Handle Webhook
 const handleWebhook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -39,4 +41,24 @@ const handleWebhook = catchAsync(
   },
 );
 
-export const paymentController = { createPaymentSession, handleWebhook };
+// Get My Payments
+const getMyPayments = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const tenantId = req.user?.id;
+
+    const result = await paymentService.getMyPaymentsFromDB(tenantId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Payment history retrived successfully.",
+      data: result,
+    });
+  },
+);
+
+export const paymentController = {
+  createPaymentSession,
+  handleWebhook,
+  getMyPayments,
+};

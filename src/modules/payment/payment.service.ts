@@ -107,7 +107,17 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
   }
 };
 
+// Get My Payments
+const getMyPaymentsFromDB = async (tenantId: string) => {
+  const payments = await prisma.payment.findMany({
+    where: { tenant_id: tenantId },
+  });
+
+  return payments;
+};
+
 export const paymentService = {
   createPaymentSessionIntoStripe,
   handleWebhook,
+  getMyPaymentsFromDB,
 };

@@ -122,6 +122,11 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
           price: true,
         },
       },
+      payment: {
+        select: {
+          status: true,
+        },
+      },
     },
   });
 
