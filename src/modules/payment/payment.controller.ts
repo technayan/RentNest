@@ -57,8 +57,27 @@ const getMyPayments = catchAsync(
   },
 );
 
+// Get Payment By ID
+const getPaymentById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const paymentId = req.params.paymentId;
+
+    const result = await paymentService.getPaymentByIdFromDB(
+      paymentId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Payment details retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const paymentController = {
   createPaymentSession,
   handleWebhook,
   getMyPayments,
+  getPaymentById,
 };

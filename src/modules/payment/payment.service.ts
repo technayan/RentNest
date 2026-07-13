@@ -116,8 +116,18 @@ const getMyPaymentsFromDB = async (tenantId: string) => {
   return payments;
 };
 
+// Get Payment By ID
+const getPaymentByIdFromDB = async (paymentId: string) => {
+  const payment = await prisma.payment.findUniqueOrThrow({
+    where: { id: paymentId },
+  });
+
+  return payment;
+};
+
 export const paymentService = {
   createPaymentSessionIntoStripe,
   handleWebhook,
   getMyPaymentsFromDB,
+  getPaymentByIdFromDB,
 };
