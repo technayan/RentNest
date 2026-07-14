@@ -1,3 +1,7 @@
+import {
+  PropertyStatus,
+  RentalRequestStatus,
+} from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 // Create Request
@@ -6,11 +10,21 @@ const createRentalRequestIntoDB = async (
   propertyId: string,
   message: string,
 ) => {
+  const isPropertyAvaialable = await prisma.property.findUniqueOrThrow({
+    where: { id: propertyId },
+  });
+
+  if (isPropertyAvaialable.availability_status !== PropertyStatus.AVAILABLE) {
+    throw new Error(
+      "This property is not available for placing a rental request.",
+    );
+  }
+
   const rentalRequest = await prisma.rentalRequest.findFirst({
     where: {
       tenant_id: tenantId,
       property_id: propertyId,
-      status: "PENDING",
+      status: RentalRequestStatus.PENDING,
     },
   });
 

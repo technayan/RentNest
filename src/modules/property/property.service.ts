@@ -15,9 +15,6 @@ const getPropertiesFromDB = async (query: IPropertyQuery) => {
   andConditions.push({
     AND: [
       {
-        availability_status: "AVAILABLE",
-      },
-      {
         isDeleted: false,
       },
     ],
@@ -94,6 +91,11 @@ const getPropertiesFromDB = async (query: IPropertyQuery) => {
           updated_at: true,
         },
       },
+      _count: {
+        select: {
+          reviews: true,
+        },
+      },
     },
   });
 
@@ -134,6 +136,11 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
           id: true,
           created_at: true,
           updated_at: true,
+        },
+      },
+      _count: {
+        select: {
+          reviews: true,
         },
       },
     },

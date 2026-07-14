@@ -1,3 +1,4 @@
+import { PropertyStatus } from "../../../generated/prisma/enums";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
@@ -30,6 +31,10 @@ const createPaymentSessionIntoStripe = async (
       throw new Error(
         `Your rental request is ${request.status}. Request must be ACCEPTED before payment.`,
       );
+    }
+
+    if (request.property.availability_status === PropertyStatus.RENTED) {
+      throw new Error("The property is already rented.");
     }
 
     const session = await stripe.checkout.sessions.create({

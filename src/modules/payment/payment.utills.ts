@@ -5,22 +5,23 @@ import { prisma } from "../../lib/prisma";
 export const handleSessionComplete = async (
   session: Stripe.Checkout.Session,
 ) => {
-  console.log(session);
-  await prisma.payment.update({
-    where: { stripe_session_id: session.id },
-    data: {
-      status: PaymentStatus.COMPLETED,
-      paid_at: new Date(),
-      method: session.payment_method_types[0],
-      provider: "stripe",
-    },
-  });
+  await prisma.$transaction(async (tx) => {
+    await tx.payment.update({
+      where: { stripe_session_id: session.id },
+      data: {
+        status: PaymentStatus.COMPLETED,
+        paid_at: new Date(),
+        method: session.payment_method_types[0],
+        provider: "stripe",
+      },
+    });
 
-  await prisma.property.update({
-    where: { id: session.metadata?.property_id },
-    data: {
-      availability_status: PropertyStatus.RENTED,
-    },
+    await tx.property.update({
+      where: { id: session.metadata?.property_id },
+      data: {
+        availability_status: PropertyStatus.RENTED,
+      },
+    });
   });
 };
 
