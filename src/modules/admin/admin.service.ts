@@ -30,8 +30,16 @@ const getAllPropertiesFromDB = async () => {
   return properties;
 };
 
+// Get All Rental Requests
+const getAllRentalFromDB = async () => {
+  const rentalRequests = await prisma.rentalRequest.findMany();
+
+  return rentalRequests;
+};
+
 export const adminService = {
   getAllUsersFromDB,
   updateUserStatusFromDB,
   getAllPropertiesFromDB,
+  getAllRentalFromDB,
 };
