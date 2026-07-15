@@ -18,4 +18,24 @@ const getAllUsers = catchAsync(
   },
 );
 
-export const adminController = { getAllUsers };
+// Update User Status
+const updateUserStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+    const status = req.body.status;
+
+    const result = await adminService.updateUserStatusFromDB(
+      userId as string,
+      status,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User's status updated successfully.",
+      data: result,
+    });
+  },
+);
+
+export const adminController = { getAllUsers, updateUserStatus };
