@@ -204,10 +204,42 @@ const getRentalHistoryFromDB = async (landlordId: string) => {
           email: true,
         },
       },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
     },
   });
 
   return rentalHistory;
+};
+
+// Get Reviews
+const getAllReviewsFromDB = async (landlordId: string) => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      property: {
+        landlord_id: landlordId,
+      },
+    },
+    include: {
+      property: {
+        select: {
+          title: true,
+          description: true,
+        },
+      },
+      tenant: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  return reviews;
 };
 
 export const landlordService = {
@@ -217,4 +249,5 @@ export const landlordService = {
   getRequestsForLandLordFromDB,
   changeRequestStatusIntoDB,
   getRentalHistoryFromDB,
+  getAllReviewsFromDB,
 };

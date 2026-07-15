@@ -124,6 +124,24 @@ const getRentalHistory = catchAsync(
   },
 );
 
+// Get All Reviews
+const getAllReviews = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user?.id;
+
+    const result = await landlordService.getAllReviewsFromDB(
+      landlordId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Reviews retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const landlordController = {
   createProperty,
   updateProperty,
@@ -131,4 +149,5 @@ export const landlordController = {
   getRequestsForLandLord,
   changeRequestStatus,
   getRentalHistory,
+  getAllReviews,
 };

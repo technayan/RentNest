@@ -35,5 +35,6 @@ router.get(
   auth(Role.LANDLORD),
   landlordController.getRentalHistory,
 );
+router.get("/reviews", auth(Role.LANDLORD), landlordController.getAllReviews);
 
 export const landlordRouter = router;
