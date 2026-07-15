@@ -6,6 +6,7 @@ model RentalRequest {
     property    Property            @relation(fields: [property_id], references: [id], onDelete: Restrict)
     message     String
     status      RentalRequestStatus @default(PENDING)
+    is_paid     Boolean             @default(false)
     created_at  DateTime            @default(now())
     updated_at  DateTime            @updatedAt
     payment     Payment?

@@ -188,10 +188,33 @@ const changeRequestStatusIntoDB = async (
   return updatedRequest;
 };
 
+// Get Rental History
+const getRentalHistoryFromDB = async (landlordId: string) => {
+  const rentalHistory = await prisma.rentalRequest.findMany({
+    where: {
+      property: {
+        landlord_id: landlordId,
+      },
+      is_paid: true,
+    },
+    include: {
+      tenant: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return rentalHistory;
+};
+
 export const landlordService = {
   createPropertyIntoDB,
   updatePropertyIntoDB,
   deletePropertyFromDB,
   getRequestsForLandLordFromDB,
   changeRequestStatusIntoDB,
+  getRentalHistoryFromDB,
 };

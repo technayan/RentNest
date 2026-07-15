@@ -106,10 +106,29 @@ const changeRequestStatus = catchAsync(
   },
 );
 
+// Get Rental History
+const getRentalHistory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user?.id;
+
+    const result = await landlordService.getRentalHistoryFromDB(
+      landlordId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental History retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const landlordController = {
   createProperty,
   updateProperty,
   deleteProperty,
   getRequestsForLandLord,
   changeRequestStatus,
+  getRentalHistory,
 };
