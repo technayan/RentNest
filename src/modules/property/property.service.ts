@@ -17,6 +17,9 @@ const getPropertiesFromDB = async (query: IPropertyQuery) => {
       {
         isDeleted: false,
       },
+      {
+        availability_status: "AVAILABLE",
+      },
     ],
   });
 
@@ -138,9 +141,16 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
           updated_at: true,
         },
       },
-      _count: {
+      reviews: {
         select: {
-          reviews: true,
+          tenant_id: true,
+          tenant: {
+            select: {
+              name: true,
+            },
+          },
+          rating: true,
+          comment: true,
         },
       },
     },

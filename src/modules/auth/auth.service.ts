@@ -2,7 +2,11 @@ import bcrypt from "bcryptjs";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwtUtils";
-import { ILoginPayload, IRegisterPayload } from "./auth.interface";
+import {
+  ILoginPayload,
+  IRegisterPayload,
+  IUpdateUserPayload,
+} from "./auth.interface";
 
 // Register User
 const registerUserIntoDB = async (payload: IRegisterPayload) => {
@@ -95,8 +99,23 @@ const getMyProfileFromDB = async (userId: string) => {
   return user;
 };
 
+// Update User
+const updateUserIntoDB = async (
+  payload: IUpdateUserPayload,
+  userId: string,
+) => {
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: payload,
+    omit: { password: true },
+  });
+
+  return updatedUser;
+};
+
 export const authService = {
   registerUserIntoDB,
   userLoginIntoDB,
   getMyProfileFromDB,
+  updateUserIntoDB,
 };

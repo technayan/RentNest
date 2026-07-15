@@ -13,3 +13,9 @@ export interface ILoginPayload {
   email: string;
   password: string;
 }
+
+export interface IUpdateUserPayload {
+  name: string;
+  phone?: string;
+  profile_photo?: string;
+}
