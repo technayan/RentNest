@@ -23,4 +23,15 @@ const updateUserStatusFromDB = async (userId: string, status: UserStatus) => {
   return user;
 };
 
-export const adminService = { getAllUsersFromDB, updateUserStatusFromDB };
+// Get All Properties
+const getAllPropertiesFromDB = async () => {
+  const properties = await prisma.property.findMany();
+
+  return properties;
+};
+
+export const adminService = {
+  getAllUsersFromDB,
+  updateUserStatusFromDB,
+  getAllPropertiesFromDB,
+};
