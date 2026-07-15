@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import config from "./config";
+import { adminRouter } from "./modules/admin/admin.route";
 import { authRouter } from "./modules/auth/auth.route";
 import { categoryRouter } from "./modules/category/category.route";
 import { landlordRouter } from "./modules/landlord/landlord.route";
@@ -36,5 +37,6 @@ app.use("/api/rentals", rentalRouter);
 app.use("/api/landlord", landlordRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/reviews", reviewRouter);
+app.use("/api/admin", adminRouter);
 
 export default app;

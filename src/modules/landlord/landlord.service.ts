@@ -127,6 +127,12 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
           status: true,
         },
       },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
     },
   });
 

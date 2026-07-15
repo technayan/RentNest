@@ -83,6 +83,12 @@ const getRequestByIDFromDB = async (requestId: string) => {
           },
         },
       },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
     },
   });
 
