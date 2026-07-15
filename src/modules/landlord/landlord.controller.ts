@@ -24,6 +24,22 @@ const createProperty = catchAsync(
   },
 );
 
+// Get My Properties
+const getMyProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    const result = await landlordService.getMyProperties(userId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "Properties retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 // Update Property
 const updateProperty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -144,6 +160,7 @@ const getAllReviews = catchAsync(
 
 export const landlordController = {
   createProperty,
+  getMyProperties,
   updateProperty,
   deleteProperty,
   getRequestsForLandLord,

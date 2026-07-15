@@ -10,6 +10,11 @@ router.post(
   auth(Role.LANDLORD),
   landlordController.createProperty,
 );
+router.get(
+  "/properties",
+  auth(Role.LANDLORD),
+  landlordController.getMyProperties,
+);
 router.put(
   "/properties/:propertyId",
   auth(Role.LANDLORD),
