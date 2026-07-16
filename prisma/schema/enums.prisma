@@ -12,6 +12,7 @@ enum Role {
 enum PropertyStatus {
     AVAILABLE
     RENTED
+    UNAVAILABLE
 }
 
 enum RentalRequestStatus {
