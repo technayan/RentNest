@@ -16,12 +16,12 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: "https://rent-nest-rosy.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   }),
 );
 
-app.use("/api/payments/confirm", express.raw({ type: "application/json" }));
+app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

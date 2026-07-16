@@ -11,7 +11,7 @@ router.post(
   paymentController.createPaymentSession,
 );
 
-router.post("/confirm", paymentController.handleWebhook);
+router.post("/webhook", paymentController.handleWebhook);
 router.get("/", auth(Role.TENANT), paymentController.getMyPayments);
 router.get("/:paymentId", auth(Role.TENANT), paymentController.getPaymentById);
 

@@ -17,7 +17,7 @@ export const handleSessionComplete = async (
     });
 
     await tx.rentalRequest.update({
-      where: { id: session.metadata?.requestId },
+      where: { id: session.metadata?.request_id },
       data: {
         is_paid: true,
       },
