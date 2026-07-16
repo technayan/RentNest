@@ -104,6 +104,14 @@ const updateUserIntoDB = async (
   payload: IUpdateUserPayload,
   userId: string,
 ) => {
+  const expectedRole = payload?.role;
+
+  if (expectedRole === "ADMIN") {
+    throw new Error(
+      "You can not update your profile as Admin without the permission of an Admin.",
+    );
+  }
+
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: payload,

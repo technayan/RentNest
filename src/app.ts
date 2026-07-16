@@ -1,7 +1,6 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
-import config from "./config";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
 import { adminRouter } from "./modules/admin/admin.route";
@@ -17,7 +16,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: config.app_url,
+    origin: "https://rent-nest-rosy.vercel.app",
     credentials: true,
   }),
 );

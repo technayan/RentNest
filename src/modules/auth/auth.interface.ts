@@ -17,5 +17,6 @@ export interface ILoginPayload {
 export interface IUpdateUserPayload {
   name: string;
   phone?: string;
+  role: Role;
   profile_photo?: string;
 }
