@@ -159,41 +159,7 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
   return property;
 };
 
-// Get Featured Properties
-const getFeaturedPropertiesFromDB = async () => {
-  const featuredProperties = await prisma.property.findMany({
-    where: { isFeatured: true },
-    include: {
-      landLord: {
-        omit: {
-          id: true,
-          password: true,
-          status: true,
-          role: true,
-          created_at: true,
-          updated_at: true,
-        },
-      },
-      category: {
-        omit: {
-          id: true,
-          created_at: true,
-          updated_at: true,
-        },
-      },
-      _count: {
-        select: {
-          reviews: true,
-        },
-      },
-    },
-  });
-
-  return featuredProperties;
-};
-
 export const propertyService = {
   getPropertiesFromDB,
   getPropertyByIdfromDB,
-  getFeaturedPropertiesFromDB,
 };
