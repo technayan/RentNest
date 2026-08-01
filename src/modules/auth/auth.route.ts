@@ -17,5 +17,6 @@ router.patch(
   auth(Role.ADMIN, Role.LANDLORD, Role.TENANT),
   authController.updateUser,
 );
+router.post("/refresh-token", authController.tokenRefresher);
 
 export const authRouter = router;

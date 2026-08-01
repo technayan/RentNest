@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwtUtils";
@@ -96,6 +97,10 @@ const getMyProfileFromDB = async (userId: string) => {
     omit: { password: true },
   });
 
+  if (user.status === "BAN") {
+    throw new Error("You account has been banned! Please, contact support.");
+  }
+
   return user;
 };
 
@@ -121,9 +126,48 @@ const updateUserIntoDB = async (
   return updatedUser;
 };
 
+// Refresh Token
+const refreshToken = async (refreshToken: string) => {
+  const verifiedToken = jwtUtils.verifyToken(
+    refreshToken,
+    config.jwt_refresh_token_secret,
+  );
+
+  if (!verifiedToken.success) {
+    throw new Error(verifiedToken.error);
+  }
+
+  const { id } = verifiedToken.data as JwtPayload;
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id },
+  });
+
+  if (user.status === "BAN") {
+    throw new Error("You account has been banned! Please, contact support.");
+  }
+
+  const jwtPayload = {
+    id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  };
+
+  const accessToken = jwtUtils.signToken(
+    jwtPayload,
+    config.jwt_access_token_secret,
+    config.jwt_access_token_expires_in,
+  );
+
+  return { accessToken };
+};
+
 export const authService = {
   registerUserIntoDB,
   userLoginIntoDB,
   getMyProfileFromDB,
   updateUserIntoDB,
+  refreshToken,
 };
