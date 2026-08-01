@@ -11,6 +11,7 @@ model Property {
     location            String          @db.VarChar(255)
     availability_status PropertyStatus  @default(AVAILABLE)
     isDeleted           Boolean         @default(false)
+    isFeatured          Boolean         @default(false)
     rental_requests     RentalRequest[]
     reviews             Review[]
     created_at          DateTime        @default(now())

@@ -5,5 +5,6 @@ const router = Router();
 
 router.get("/", propertyController.getAllProperties);
 router.get("/:propertyId", propertyController.getPropertyById);
+router.get("/featured", propertyController.getFeaturedProperties);
 
 export const propertyRouter = router;
