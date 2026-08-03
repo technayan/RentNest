@@ -168,7 +168,7 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
     }),
   ]);
 
-  return { ...property, rating };
+  return { ...property, average_rating: rating._avg.rating ?? 0 };
 };
 
 export const propertyService = {
