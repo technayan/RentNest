@@ -1,5 +1,9 @@
 import Stripe from "stripe";
-import { PaymentStatus, PropertyStatus } from "../../../generated/prisma/enums";
+import {
+  PaymentStatus,
+  PropertyStatus,
+  RentalRequestStatus,
+} from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 export const handleSessionComplete = async (
@@ -20,6 +24,7 @@ export const handleSessionComplete = async (
       where: { id: session.metadata?.request_id },
       data: {
         is_paid: true,
+        status: RentalRequestStatus.ACTIVE,
       },
     });
 

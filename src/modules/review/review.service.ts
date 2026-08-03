@@ -1,4 +1,8 @@
-import { PaymentStatus } from "../../../generated/prisma/enums";
+import {
+  PaymentStatus,
+  PropertyStatus,
+  RentalRequestStatus,
+} from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { IReviewPayload } from "./review.interface";
 
@@ -8,37 +12,55 @@ const createReviewIntoDB = async (
   tenantId: string,
   payload: IReviewPayload,
 ) => {
-  const request = await prisma.rentalRequest.findUniqueOrThrow({
-    where: { id: requestId },
-    include: {
-      property: true,
-      payment: true,
-    },
+  const transactionResult = await prisma.$transaction(async (tx) => {
+    const request = await tx.rentalRequest.findUniqueOrThrow({
+      where: { id: requestId },
+      include: {
+        property: true,
+        payment: true,
+      },
+    });
+
+    if (
+      request.tenant_id !== tenantId ||
+      !request.payment ||
+      request.payment.status !== PaymentStatus.COMPLETED
+    ) {
+      throw new Error("You must complete the rental to leave a review.");
+    }
+
+    if (payload.rating > 5 || payload.rating < 1) {
+      throw new Error("Rating must be between 1 to 5");
+    }
+
+    const review = await tx.review.create({
+      data: {
+        tenant_id: request.tenant_id,
+        property_id: request.property_id,
+        rental_request_id: requestId,
+        rating: payload.rating,
+        comment: payload.comment,
+      },
+    });
+
+    await tx.rentalRequest.update({
+      where: { id: requestId },
+      data: {
+        status: RentalRequestStatus.COMPLETED,
+      },
+    });
+
+    await tx.property.update({
+      where: { id: request.property_id },
+      data: {
+        availability_status: PropertyStatus.AVAILABLE,
+      },
+    });
+
+    return review;
   });
 
-  if (
-    request.tenant_id !== tenantId ||
-    !request.payment ||
-    request.payment.status !== PaymentStatus.COMPLETED
-  ) {
-    throw new Error("You must complete the rental to leave a review.");
-  }
-
-  if (payload.rating > 5 || payload.rating < 1) {
-    throw new Error("Rating must be between 1 to 5");
-  }
-
-  const review = await prisma.review.create({
-    data: {
-      tenant_id: request.tenant_id,
-      property_id: request.property_id,
-      rental_request_id: requestId,
-      rating: payload.rating,
-      comment: payload.comment,
-    },
-  });
-
-  return review;
+  return transactionResult;
 };
 
 export const reviewService = { createReviewIntoDB };
