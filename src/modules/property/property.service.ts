@@ -121,42 +121,51 @@ const getPropertiesFromDB = async (query: IPropertyQuery) => {
 
 // Get Property By ID
 const getPropertyByIdfromDB = async (propertyId: string) => {
-  const property = await prisma.property.findUniqueOrThrow({
-    where: { id: propertyId },
-    include: {
-      landLord: {
-        omit: {
-          id: true,
-          password: true,
-          status: true,
-          role: true,
-          created_at: true,
-          updated_at: true,
-        },
-      },
-      category: {
-        omit: {
-          id: true,
-          created_at: true,
-          updated_at: true,
-        },
-      },
-      reviews: {
-        select: {
-          tenant_id: true,
-          tenant: {
-            select: {
-              name: true,
-            },
+  const [property, rating] = await Promise.all([
+    prisma.property.findUniqueOrThrow({
+      where: { id: propertyId },
+      include: {
+        landLord: {
+          omit: {
+            id: true,
+            password: true,
+            status: true,
+            role: true,
+            created_at: true,
+            updated_at: true,
           },
-          rating: true,
-          comment: true,
+        },
+        category: {
+          omit: {
+            id: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+        reviews: {
+          select: {
+            tenant_id: true,
+            tenant: {
+              select: {
+                name: true,
+              },
+            },
+            rating: true,
+            comment: true,
+          },
         },
       },
-    },
-  });
+    }),
 
-  return property;
+    prisma.review.aggregate({
+      where: { property_id: propertyId },
+      _avg: {
+        rating: true,
+      },
+    }),
+  ]);
+
+  return { ...property, rating };
 };
 
 export const propertyService = {
