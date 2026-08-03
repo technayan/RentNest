@@ -144,9 +144,10 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
         },
         reviews: {
           select: {
-            tenant_id: true,
+            id: true,
             tenant: {
               select: {
+                id: true,
                 name: true,
               },
             },
