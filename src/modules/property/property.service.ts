@@ -149,10 +149,12 @@ const getPropertyByIdfromDB = async (propertyId: string) => {
               select: {
                 id: true,
                 name: true,
+                profile_photo: true,
               },
             },
             rating: true,
             comment: true,
+            created_at: true,
           },
         },
       },
