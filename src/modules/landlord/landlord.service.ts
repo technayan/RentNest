@@ -38,7 +38,7 @@ const createPropertyIntoDB = async (
 // Get My Properties
 const getMyProperties = async (landlordId: string) => {
   const properties = await prisma.property.findMany({
-    where: { landlord_id: landlordId },
+    where: { landlord_id: landlordId, isDeleted: false },
     include: {
       category: {
         select: {
