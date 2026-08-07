@@ -30,6 +30,11 @@ router.get(
   auth(Role.LANDLORD),
   landlordController.getRequestsForLandLord,
 );
+router.get(
+  "/active-requests",
+  auth(Role.LANDLORD),
+  landlordController.getActiveRequestsForLandLord,
+);
 router.patch(
   "/requests/:requestId",
   auth(Role.LANDLORD),

@@ -100,6 +100,24 @@ const getRequestsForLandLord = catchAsync(
   },
 );
 
+// Get Active Requests for Landlord
+const getActiveRequestsForLandLord = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landLordId = req.user?.id;
+
+    const result = await landlordService.getActiveRequestsForLandLordFromDB(
+      landLordId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Active Rental Requests retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 // Change Request Status
 const changeRequestStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -164,6 +182,7 @@ export const landlordController = {
   updateProperty,
   deleteProperty,
   getRequestsForLandLord,
+  getActiveRequestsForLandLord,
   changeRequestStatus,
   getRentalHistory,
   getAllReviews,

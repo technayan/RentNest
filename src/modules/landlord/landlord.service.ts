@@ -324,6 +324,7 @@ export const landlordService = {
   updatePropertyIntoDB,
   deletePropertyFromDB,
   getRequestsForLandLordFromDB,
+  getActiveRequestsForLandLordFromDB,
   changeRequestStatusIntoDB,
   getRentalHistoryFromDB,
   getAllReviewsFromDB,
