@@ -155,6 +155,55 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
         },
       },
     },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+
+  console.log(requests);
+
+  return requests;
+};
+
+// Get Active Requests for LandLord
+const getActiveRequestsForLandLordFromDB = async (landlordId: string) => {
+  const requests = await prisma.rentalRequest.findMany({
+    where: {
+      property: {
+        landlord_id: landlordId,
+      },
+      status: "PENDING",
+    },
+    include: {
+      tenant: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          profile_photo: true,
+        },
+      },
+      property: {
+        select: {
+          title: true,
+          price: true,
+        },
+      },
+      payment: {
+        select: {
+          status: true,
+        },
+      },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
+    },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   console.log(requests);
@@ -232,6 +281,9 @@ const getRentalHistoryFromDB = async (landlordId: string) => {
         },
       },
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return rentalHistory;
@@ -257,6 +309,9 @@ const getAllReviewsFromDB = async (landlordId: string) => {
           name: true,
         },
       },
+    },
+    orderBy: {
+      created_at: "desc",
     },
   });
 

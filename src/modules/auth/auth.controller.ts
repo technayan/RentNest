@@ -81,7 +81,7 @@ const updateUser = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User updateds successfully.",
+      message: "User updated successfully.",
       data: result,
     });
   },

@@ -52,6 +52,9 @@ const getMyRentalRequestsFromDB = async (tenantId: string) => {
     include: {
       property: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return requests;
