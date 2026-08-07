@@ -34,6 +34,20 @@ const getAllPropertiesFromDB = async () => {
 const getAllRentalFromDB = async () => {
   const rentalRequests = await prisma.rentalRequest.findMany({
     include: {
+      property: true,
+      tenant: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          profile_photo: true,
+        },
+      },
+      payment: {
+        select: {
+          status: true,
+        },
+      },
       review: {
         select: {
           rating: true,

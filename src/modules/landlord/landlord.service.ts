@@ -129,18 +129,13 @@ const getRequestsForLandLordFromDB = async (landlordId: string) => {
       },
     },
     include: {
+      property: true,
       tenant: {
         select: {
           name: true,
           email: true,
           phone: true,
           profile_photo: true,
-        },
-      },
-      property: {
-        select: {
-          title: true,
-          price: true,
         },
       },
       payment: {
@@ -175,18 +170,13 @@ const getActiveRequestsForLandLordFromDB = async (landlordId: string) => {
       status: "PENDING",
     },
     include: {
+      property: true,
       tenant: {
         select: {
           name: true,
           email: true,
           phone: true,
           profile_photo: true,
-        },
-      },
-      property: {
-        select: {
-          title: true,
-          price: true,
         },
       },
       payment: {

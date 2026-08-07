@@ -51,6 +51,25 @@ const getMyRentalRequestsFromDB = async (tenantId: string) => {
     where: { tenant_id: tenantId },
     include: {
       property: true,
+      tenant: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          profile_photo: true,
+        },
+      },
+      payment: {
+        select: {
+          status: true,
+        },
+      },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
     },
     orderBy: {
       created_at: "desc",
