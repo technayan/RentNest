@@ -53,14 +53,14 @@ const getAllProperties = catchAsync(
 );
 
 // Get All Rental Requests
-const getAllRentals = catchAsync(
+const getPendingRequests = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await adminService.getAllRentalFromDB();
+    const result = await adminService.getPendingRequestsFromDB();
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "All rental requests retrived successfully.",
+      message: "Pending requests retrived successfully.",
       data: result,
     });
   },
@@ -70,5 +70,5 @@ export const adminController = {
   getAllUsers,
   updateUserStatus,
   getAllProperties,
-  getAllRentals,
+  getPendingRequests,
 };

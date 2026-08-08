@@ -12,6 +12,10 @@ router.patch(
   adminController.updateUserStatus,
 );
 router.get("/properties", auth(Role.ADMIN), adminController.getAllProperties);
-router.get("/rentals", auth(Role.ADMIN), adminController.getAllRentals);
+router.get(
+  "/pending-requests",
+  auth(Role.ADMIN),
+  adminController.getPendingRequests,
+);
 
 export const adminRouter = router;

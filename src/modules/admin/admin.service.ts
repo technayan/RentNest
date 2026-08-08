@@ -31,8 +31,9 @@ const getAllPropertiesFromDB = async () => {
 };
 
 // Get All Rental Requests
-const getAllRentalFromDB = async () => {
+const getPendingRequestsFromDB = async () => {
   const rentalRequests = await prisma.rentalRequest.findMany({
+    where: { status: "PENDING" },
     include: {
       property: true,
       tenant: {
@@ -55,6 +56,9 @@ const getAllRentalFromDB = async () => {
         },
       },
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return rentalRequests;
@@ -64,5 +68,5 @@ export const adminService = {
   getAllUsersFromDB,
   updateUserStatusFromDB,
   getAllPropertiesFromDB,
-  getAllRentalFromDB,
+  getPendingRequestsFromDB,
 };
