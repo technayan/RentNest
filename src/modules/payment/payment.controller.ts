@@ -19,7 +19,7 @@ const createPaymentSession = catchAsync(
       success: true,
       statusCode: httpStatus.CREATED,
       message: "Payment session created.",
-      data: { payemnt_url: result },
+      data: result,
     });
   },
 );

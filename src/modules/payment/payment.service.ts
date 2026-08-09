@@ -58,8 +58,8 @@ const createPaymentSessionIntoStripe = async (
         enabled: false,
       },
 
-      success_url: `${config.app_url}/payments/success`,
-      cancel_url: `${config.app_url}/payments/cancel`,
+      success_url: "http://localhost:3000/payments/success",
+      cancel_url: "http://localhost:3000/payments/cancel",
 
       metadata: {
         tenant_id: request.tenant_id,
