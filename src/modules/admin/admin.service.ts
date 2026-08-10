@@ -25,7 +25,35 @@ const updateUserStatusFromDB = async (userId: string, status: UserStatus) => {
 
 // Get All Properties
 const getAllPropertiesFromDB = async () => {
-  const properties = await prisma.property.findMany();
+  const properties = await prisma.property.findMany({
+    include: {
+      landLord: {
+        omit: {
+          id: true,
+          password: true,
+          status: true,
+          role: true,
+          created_at: true,
+          updated_at: true,
+        },
+      },
+      category: {
+        omit: {
+          id: true,
+          created_at: true,
+          updated_at: true,
+        },
+      },
+      _count: {
+        select: {
+          reviews: true,
+        },
+      },
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
 
   return properties;
 };
