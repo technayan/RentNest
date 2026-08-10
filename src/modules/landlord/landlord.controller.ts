@@ -158,6 +158,24 @@ const getRentalHistory = catchAsync(
   },
 );
 
+// Get Rental History
+const getEarnings = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user?.id;
+
+    const result = await landlordService.getEarningsFromDB(
+      landlordId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Earnings retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 // Get All Reviews
 const getAllReviews = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -185,5 +203,6 @@ export const landlordController = {
   getActiveRequestsForLandLord,
   changeRequestStatus,
   getRentalHistory,
+  getEarnings,
   getAllReviews,
 };

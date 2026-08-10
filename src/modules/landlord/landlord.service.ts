@@ -1,4 +1,7 @@
-import { RentalRequestStatus } from "../../../generated/prisma/enums";
+import {
+  PaymentStatus,
+  RentalRequestStatus,
+} from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { isCategoryExist } from "../../utils/isCategoryExist";
 import {
@@ -287,6 +290,25 @@ const getRentalHistoryFromDB = async (landlordId: string) => {
   return rentalHistory;
 };
 
+// Get Earnings
+const getEarningsFromDB = async (landlordId: string) => {
+  const earnings = await prisma.payment.aggregate({
+    _sum: {
+      amount: true,
+    },
+    where: {
+      status: PaymentStatus.COMPLETED,
+      rental_request: {
+        property: {
+          landlord_id: landlordId,
+        },
+      },
+    },
+  });
+
+  return Number(earnings._sum.amount ?? 0);
+};
+
 // Get Reviews
 const getAllReviewsFromDB = async (landlordId: string) => {
   const reviews = await prisma.review.findMany({
@@ -325,5 +347,6 @@ export const landlordService = {
   getActiveRequestsForLandLordFromDB,
   changeRequestStatusIntoDB,
   getRentalHistoryFromDB,
+  getEarningsFromDB,
   getAllReviewsFromDB,
 };

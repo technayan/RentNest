@@ -45,6 +45,7 @@ router.get(
   auth(Role.LANDLORD),
   landlordController.getRentalHistory,
 );
+router.get("/earnings", auth(Role.LANDLORD), landlordController.getEarnings);
 router.get("/reviews", auth(Role.LANDLORD), landlordController.getAllReviews);
 
 export const landlordRouter = router;
