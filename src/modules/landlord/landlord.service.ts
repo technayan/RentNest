@@ -258,10 +258,18 @@ const getRentalHistoryFromDB = async (landlordId: string) => {
       is_paid: true,
     },
     include: {
+      property: true,
       tenant: {
         select: {
           name: true,
           email: true,
+          phone: true,
+          profile_photo: true,
+        },
+      },
+      payment: {
+        select: {
+          status: true,
         },
       },
       review: {
