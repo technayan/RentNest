@@ -26,6 +26,7 @@ const updateUserStatusFromDB = async (userId: string, status: UserStatus) => {
 // Get All Properties
 const getAllPropertiesFromDB = async () => {
   const properties = await prisma.property.findMany({
+    where: { isDeleted: false },
     include: {
       landLord: {
         omit: {
