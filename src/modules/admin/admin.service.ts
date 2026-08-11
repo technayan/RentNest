@@ -1,13 +1,56 @@
 import { UserStatus } from "../../../generated/prisma/enums";
+import { UserWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
+import { IUserQuery } from "./admin.interface";
 
 // Get All Users
-const getAllUsersFromDB = async () => {
+const getAllUsersFromDB = async (query: IUserQuery) => {
+  const limit = query.limit ? Number(query.limit) : 12;
+  const page = query.page ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+  const sortBy = query.sortBy ? query.sortBy : "created_at";
+  const sortOrder = query.sortOrder ? query.sortOrder : "desc";
+
+  const andConditions: UserWhereInput[] = [];
+
+  if (query.searchTerm) {
+    andConditions.push({
+      OR: [
+        {
+          name: {
+            contains: query.searchTerm,
+            mode: "insensitive",
+          },
+        },
+      ],
+    });
+  }
+
   const users = await prisma.user.findMany({
+    where: { AND: andConditions, role: { not: "ADMIN" } },
+    take: limit,
+    skip: skip,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
     omit: { password: true },
   });
 
-  return users;
+  const totalUserCount = await prisma.user.count({
+    where: {
+      AND: andConditions,
+    },
+  });
+
+  return {
+    data: users,
+    meta: {
+      page: page,
+      limit: limit,
+      total: totalUserCount,
+      pages: Math.ceil(totalUserCount / limit),
+    },
+  };
 };
 
 // Update User Status
@@ -26,6 +69,7 @@ const updateUserStatusFromDB = async (userId: string, status: UserStatus) => {
 // Get All Properties
 const getAllPropertiesFromDB = async () => {
   const properties = await prisma.property.findMany({
+    where: { isDeleted: false },
     include: {
       landLord: {
         omit: {
