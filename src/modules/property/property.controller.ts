@@ -38,7 +38,22 @@ const getPropertyById = catchAsync(
   },
 );
 
+// Get Featured Properties
+const getFeaturedProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await propertyService.getFeaturedPropertiesFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Featured properties retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const propertyController = {
   getAllProperties,
   getPropertyById,
+  getFeaturedProperties,
 };

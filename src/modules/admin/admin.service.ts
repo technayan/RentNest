@@ -103,7 +103,7 @@ const getAllPropertiesFromDB = async () => {
   return properties;
 };
 
-// Get All Rental Requests
+// Get All Pending Rental Requests
 const getPendingRequestsFromDB = async () => {
   const rentalRequests = await prisma.rentalRequest.findMany({
     where: { status: "PENDING" },
@@ -158,7 +158,12 @@ const getStatsFromDB = async () => {
       },
     });
 
-    return { usersCount, propertyCount, rentalCount, transactionCount };
+    return {
+      totalUsers: usersCount ?? 0,
+      totalProperties: propertyCount ?? 0,
+      totalRentals: rentalCount ?? 0,
+      totalTransactions: transactionCount._sum.amount ?? 0,
+    };
   });
 
   return transactionResult;
