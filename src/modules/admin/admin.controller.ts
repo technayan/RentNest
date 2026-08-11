@@ -67,9 +67,24 @@ const getPendingRequests = catchAsync(
   },
 );
 
+// Get Stats
+const getStats = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await adminService.getStatsFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Stats retrived successfully.",
+      data: result,
+    });
+  },
+);
+
 export const adminController = {
   getAllUsers,
   updateUserStatus,
   getAllProperties,
   getPendingRequests,
+  getStats,
 };

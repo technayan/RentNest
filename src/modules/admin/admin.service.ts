@@ -137,9 +137,37 @@ const getPendingRequestsFromDB = async () => {
   return rentalRequests;
 };
 
+// Get Stats
+const getStatsFromDB = async () => {
+  const transactionResult = await prisma.$transaction(async (tx) => {
+    const usersCount = await tx.user.count({
+      where: { role: { not: "ADMIN" } },
+    });
+
+    const propertyCount = await tx.property.count({
+      where: { isDeleted: false },
+    });
+
+    const rentalCount = await tx.rentalRequest.count({
+      where: { is_paid: true },
+    });
+
+    const transactionCount = await tx.payment.aggregate({
+      _sum: {
+        amount: true,
+      },
+    });
+
+    return { usersCount, propertyCount, rentalCount, transactionCount };
+  });
+
+  return transactionResult;
+};
+
 export const adminService = {
   getAllUsersFromDB,
   updateUserStatusFromDB,
   getAllPropertiesFromDB,
   getPendingRequestsFromDB,
+  getStatsFromDB,
 };

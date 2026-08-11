@@ -17,5 +17,6 @@ router.get(
   auth(Role.ADMIN),
   adminController.getPendingRequests,
 );
+router.get("/stats", auth(Role.ADMIN), adminController.getStats);
 
 export const adminRouter = router;
