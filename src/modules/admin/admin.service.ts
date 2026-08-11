@@ -39,6 +39,7 @@ const getAllUsersFromDB = async (query: IUserQuery) => {
   const totalUserCount = await prisma.user.count({
     where: {
       AND: andConditions,
+      role: { not: "ADMIN" },
     },
   });
 
