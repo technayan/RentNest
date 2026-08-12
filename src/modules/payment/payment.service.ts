@@ -58,8 +58,8 @@ const createPaymentSessionIntoStripe = async (
         enabled: false,
       },
 
-      success_url: "http://localhost:3000/payments/success",
-      cancel_url: "http://localhost:3000/payments/cancel",
+      success_url: "https://rent-nest-frontend-six.vercel.app/payments/success",
+      cancel_url: "https://rent-nest-frontend-six.vercel.app/payments/cancel",
 
       metadata: {
         tenant_id: request.tenant_id,
