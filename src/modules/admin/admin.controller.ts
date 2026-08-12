@@ -53,7 +53,7 @@ const getAllProperties = catchAsync(
   },
 );
 
-// Get All Rental Requests
+// Get All Pending Rental Requests
 const getPendingRequests = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await adminService.getPendingRequestsFromDB();
@@ -62,6 +62,20 @@ const getPendingRequests = catchAsync(
       success: true,
       statusCode: httpStatus.OK,
       message: "Pending requests retrived successfully.",
+      data: result,
+    });
+  },
+);
+
+// Get All Rental Requests
+const getAllRequests = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await adminService.getAllRequestsFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All rental requests retrived successfully.",
       data: result,
     });
   },
@@ -86,5 +100,6 @@ export const adminController = {
   updateUserStatus,
   getAllProperties,
   getPendingRequests,
+  getAllRequests,
   getStats,
 };

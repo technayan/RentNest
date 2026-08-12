@@ -137,6 +137,39 @@ const getPendingRequestsFromDB = async () => {
   return rentalRequests;
 };
 
+// Get All Rental Requests
+const getAllRequestsFromDB = async () => {
+  const allRequests = await prisma.rentalRequest.findMany({
+    include: {
+      property: true,
+      tenant: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          profile_photo: true,
+        },
+      },
+      payment: {
+        select: {
+          status: true,
+        },
+      },
+      review: {
+        select: {
+          rating: true,
+          comment: true,
+        },
+      },
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+
+  return allRequests;
+};
+
 // Get Stats
 const getStatsFromDB = async () => {
   const transactionResult = await prisma.$transaction(async (tx) => {
@@ -174,5 +207,6 @@ export const adminService = {
   updateUserStatusFromDB,
   getAllPropertiesFromDB,
   getPendingRequestsFromDB,
+  getAllRequestsFromDB,
   getStatsFromDB,
 };
